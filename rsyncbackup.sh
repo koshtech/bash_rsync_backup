@@ -35,5 +35,17 @@ do
     echo $run_cmd
     $run_cmd
   done
+
+  if [ $source_host != "local" ] ; then
+    if [ $mysql_user != "" ] ; then
+
+      databases=`mysql --host=$source_host --user=$mysql_user --password=$mysql_pass -e 'SHOW DATABASES;' | grep -Ev '(Database|information_schema)'`
+
+      for database in $databases
+      do
+        result=`mysqldump --user=$mysql_user --password=$mysql_pass --host=$source_host --skip-opt --add-locks $database | gzip -9 > $destination_folder/$database.gz`
+      done
+    fi
+  fi
 done
 echo "Done"
