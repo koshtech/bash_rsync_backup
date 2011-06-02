@@ -1,0 +1,7 @@
+/home/*/logs
+/home/*/*.zip
+/home/*/*.tar
+/home/*/*.tar.gz
+/home/*/*.gz
+/home/*/*.bz2
+/home/*/*.rar

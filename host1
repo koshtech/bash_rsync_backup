@@ -1,0 +1,7 @@
+source_host="host1"
+source_folders="/etc /usr/local /home/user1"
+exclude_from="host1_exclude"
+destination_folder="/media/extra/local_backup/"
+destination_host="local"
+mysql_user=
+mysql_pass=
