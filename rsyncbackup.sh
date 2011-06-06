@@ -37,7 +37,7 @@ do
   done
 
   if [ $source_host != "local" ] ; then
-    if [ $mysql_user != "" ] ; then
+    if [ -n "$mysql_user" ]; then
 
       databases=`mysql --host=$source_host --user=$mysql_user --password=$mysql_pass -e 'SHOW DATABASES;' | grep -Ev '(Database|information_schema)'`
 
