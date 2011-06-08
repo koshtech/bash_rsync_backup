@@ -1,29 +1,29 @@
-Bash Rsync Backup
+# Bash Rsync Backup
 
 A lite Bash script to do backups for many host to many hosts, includind or not theirs databases.
 
-Features:
+## Features:
 
- Unlimited hosts
- Simple config files
- Run from Cron or command line
- Dump and compact MySQL databases
+ * Unlimited hosts
+ * Simple config files
+ * Run from Cron or command line
+ * Dump and compact MySQL databases
  
-How to use it:
+## How to use it:
 
  Copy rsyncbackup.sh to /usr/local/bin
  copy host1, host1_exclude and machines-enabled files to /etc/backup.d
  Edit host1 as you needed
  
-Adding more hosts:
+## Adding more hosts:
 
  Make a copy of /etc/backup.d/host1 to /etc/backup.d/host2 and adjust all values.
  Add the host2 at end of /etc/backup.d/machines-enabled and save it.
  
-How it works?
+## How it works?
 
-The script looks at /etc/backup.d/machines-enabled to retreive a list of hosts.
-The file /etc/backup.d/host1 contains the settings for backup of host1 machine.
-The file /etc/backup.d/host1_exclude contains a list of files that must be ignored in backup.
-
+ The script looks at /etc/backup.d/machines-enabled to retreive a list of hosts.
+ The file /etc/backup.d/host1 contains the settings for backup of host1 machine.
+ The file /etc/backup.d/host1_exclude contains a list of files that must be ignored in backup.
+ For MySQL backups just put the login and data for root user in /etc/backup.d/host1. If mysql login credentials are present the backup will dump all databases.
 
