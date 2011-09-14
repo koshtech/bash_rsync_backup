@@ -19,6 +19,40 @@ A lite Bash script to do backups for many host to many hosts, includind or not t
  $ sudo ln -s /opt/bash_rsync_backup/bin/rsyncbackup /usr/local/bin/
  Copy base configuration files:
  $ cp -r /opt/bash_rsync_backup/etc/backup.d /etc/
+ Create your backup:
+ 
+ Goto into /etc/backup.d and make a copy of the host1* files:
+ 
+ $ cd /etc/backup.d
+ $ cp host1 myserver
+ $ cp host1_exclude myserver_exclude
+ 
+ Now edit myserver and make your changes:
+ 
+ $ nano myserver
+ 
+ Assume you want to make a 1st backup layer on a secound hard drive on same box,
+ make your changes like:
+ 
+ source_host="local" # A hostname here will make a remote backup. 'local' makes 
+                     # a local backup. A 1st backup layer on a secound hard 
+                     # drive on same box. 
+ source_folders="/etc /usr/local /home/ /some/folder" # What we want to backup.
+ exclude_from="myserver_exclude" # What we do not want to backup.
+ destination_folder="/media/local_backup/" # Where we will put the backup in 
+                                           # local or remote.
+ destination_host="local" # 'local' makes a local backup. A 1st backup layer on 
+                          # a secound hard drive on same box. A hostname here 
+                          # will make a remote backup.
+ 
+ Save and exit.
+ Now edit and remove unwanted rows of myserver_exclude.
+ 
+ Edit machines-enabled and change from host1 to myserver:
+ 
+ nano machines-enabled
+ 
+ 
  Run your backups:
  $ rsyncbackup
  
