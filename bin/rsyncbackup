@@ -43,6 +43,14 @@ do
     for database in $databases
     do
       result=`mysqldump --user=$mysql_user --password=$mysql_pass --host=$mysql_host --skip-opt --add-locks $database | gzip -9 > $destination_folder/$database.gz`
+
+      if [ -e "$destination_folder/5-$database.gz" ]; then rm "$destination_folder/5-$database.gz" ; fi
+      if [ -e "$destination_folder/4-$database.gz" ]; then mv "$destination_folder/4-$database.gz $destination_folder/5-$database.gz" ; fi
+      if [ -e "$destination_folder/3-$database.gz" ]; then mv "$destination_folder/3-$database.gz $destination_folder/4-$database.gz" ; fi
+      if [ -e "$destination_folder/2-$database.gz" ]; then mv "$destination_folder/2-$database.gz $destination_folder/3-$database.gz" ; fi
+      if [ -e "$destination_folder/1-$database.gz" ]; then mv "$destination_folder/1-$database.gz $destination_folder/2-$database.gz" ; fi
+      mv "$destination_folder/$database.gz $destination_folder/1-$database.gz"
+      
       echo "Database $database done."
     done
   fi
