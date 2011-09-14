@@ -11,6 +11,15 @@ A lite Bash script to do backups for many host to many hosts, includind or not t
  
 ## How to use it:
 
+ Change to /opt:
+ $ cd /opt
+ Clone the repos:
+ $ git clone git://github.com/CidadelasIT/bash_rsync_backup.git
+ 
+ 
+
+### Old version
+
  Copy rsyncbackup.sh to /usr/local/bin
  copy host1, host1_exclude and machines-enabled files to /etc/backup.d
  Edit host1 as you needed
