@@ -38,11 +38,11 @@ do
 
   if [ -n "$mysql_user" ]; then
     echo "MySQL backup for $machine"
-    databases=`mysql --host=$source_host --user=$mysql_user --password=$mysql_pass -e 'SHOW DATABASES;' | grep -Ev '(Database|information_schema)'`
+    databases=`mysql --host=$mysql_host --user=$mysql_user --password=$mysql_pass -e 'SHOW DATABASES;' | grep -Ev '(Database|information_schema)'`
     echo "Will backup batabases $databases."
     for database in $databases
     do
-      result=`mysqldump --user=$mysql_user --password=$mysql_pass --host=$source_host --skip-opt --add-locks $database | gzip -9 > $destination_folder/$database.gz`
+      result=`mysqldump --user=$mysql_user --password=$mysql_pass --host=$mysql_host --skip-opt --add-locks $database | gzip -9 > $destination_folder/$database.gz`
       echo "Database $database done."
     done
   fi
