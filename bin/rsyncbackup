@@ -44,12 +44,12 @@ do
     do
       result=`mysqldump --user=$mysql_user --password=$mysql_pass --host=$mysql_host --skip-opt --add-locks $database | gzip -9 > $destination_folder/$database.gz`
 
-      if [ -e "$destination_folder/5-$database.gz" ]; then rm $destination_folder/5-$database.gz ; fi
-      if [ -e "$destination_folder/4-$database.gz" ]; then mv $destination_folder/4-$database.gz $destination_folder/5-$database.gz ; fi
-      if [ -e "$destination_folder/3-$database.gz" ]; then mv $destination_folder/3-$database.gz $destination_folder/4-$database.gz ; fi
-      if [ -e "$destination_folder/2-$database.gz" ]; then mv $destination_folder/2-$database.gz $destination_folder/3-$database.gz ; fi
-      if [ -e "$destination_folder/1-$database.gz" ]; then mv $destination_folder/1-$database.gz $destination_folder/2-$database.gz ; fi
-      mv $destination_folder/$database.gz $destination_folder/1-$database.gz
+      if [ -e "$destination_folder/$database-5.gz" ]; then rm $destination_folder/$database-5.gz ; fi
+      if [ -e "$destination_folder/$database-4.gz" ]; then mv $destination_folder/$database-4.gz $destination_folder/$database-5.gz ; fi
+      if [ -e "$destination_folder/$database-3.gz" ]; then mv $destination_folder/$database-3.gz $destination_folder/$database-4.gz ; fi
+      if [ -e "$destination_folder/$database-2.gz" ]; then mv $destination_folder/$database-2.gz $destination_folder/$database-3.gz ; fi
+      if [ -e "$destination_folder/$database-1.gz" ]; then mv $destination_folder/$database-1.gz $destination_folder/$database-2.gz ; fi
+      mv $destination_folder/$database.gz $destination_folder/$database-1.gz
       
       echo "Database $database done."
     done
