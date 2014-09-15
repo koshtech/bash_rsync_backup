@@ -3,7 +3,7 @@
 mysql_backup_to=/tmp/mysql_backup_to
 
 # Excluded databases. Internal excludes information_schema|mysql|performance_schema
-mysql_exclude_databases="database1|database2"
+mysql_exclude_databases="|database1|database2"
 
 # Host and login info
 mysql_host=localhost

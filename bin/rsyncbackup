@@ -14,7 +14,7 @@ do
 
   if [ -n "$mysql_user" ]; then
     echo "MySQL backup for $machine"
-    databases=`mysql --host=$mysql_host --user=$mysql_user --password=$mysql_pass -e 'SHOW DATABASES;' | grep -Ev "(Database|information_schema|mysql|performance_schema|$mysql_exclude_databases)"`
+    databases=`mysql --host=$mysql_host --user=$mysql_user --password=$mysql_pass -e 'SHOW DATABASES;' | grep -Ev "(Database|information_schema|mysql|performance_schema$mysql_exclude_databases)"`
     echo "Will backup batabases $databases: $databases"
     for database in $databases
     do
