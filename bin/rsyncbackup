@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Simple bash script to do MySQL and files backup over rsync.
+# It can do local or remote backup
+
 backup_d="/etc/backup.d/"
 machines="machines-enabled"
 rsync_cmd="/usr/bin/rsync -razplR --delete --delete-excluded"
