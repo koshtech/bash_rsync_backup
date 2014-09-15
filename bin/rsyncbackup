@@ -15,14 +15,14 @@ do
     echo "Will backup batabases $databases."
     for database in $databases
     do
-      result=`mysqldump --user=$mysql_user --password=$mysql_pass --host=$mysql_host $database | gzip -9 > $destination_folder/$database.gz`
+      result=`mysqldump --user=$mysql_user --password=$mysql_pass --host=$mysql_host $database | gzip -9 > $mysql_backup_to/$database.gz`
 
-      if [ -e "$destination_folder/$database-5.gz" ]; then rm $destination_folder/$database-5.gz ; fi
-      if [ -e "$destination_folder/$database-4.gz" ]; then mv $destination_folder/$database-4.gz $destination_folder/$database-5.gz ; fi
-      if [ -e "$destination_folder/$database-3.gz" ]; then mv $destination_folder/$database-3.gz $destination_folder/$database-4.gz ; fi
-      if [ -e "$destination_folder/$database-2.gz" ]; then mv $destination_folder/$database-2.gz $destination_folder/$database-3.gz ; fi
-      if [ -e "$destination_folder/$database-1.gz" ]; then mv $destination_folder/$database-1.gz $destination_folder/$database-2.gz ; fi
-      mv $destination_folder/$database.gz $destination_folder/$database-1.gz
+      if [ -e "$mysql_backup_to/$database-5.gz" ]; then rm $mysql_backup_to/$database-5.gz ; fi
+      if [ -e "$mysql_backup_to/$database-4.gz" ]; then mv $mysql_backup_to/$database-4.gz $mysql_backup_to/$database-5.gz ; fi
+      if [ -e "$mysql_backup_to/$database-3.gz" ]; then mv $mysql_backup_to/$database-3.gz $mysql_backup_to/$database-4.gz ; fi
+      if [ -e "$mysql_backup_to/$database-2.gz" ]; then mv $mysql_backup_to/$database-2.gz $mysql_backup_to/$database-3.gz ; fi
+      if [ -e "$mysql_backup_to/$database-1.gz" ]; then mv $mysql_backup_to/$database-1.gz $mysql_backup_to/$database-2.gz ; fi
+      mv $mysql_backup_to/$database.gz $mysql_backup_to/$database-1.gz
 
       echo "Database $database done."
     done
