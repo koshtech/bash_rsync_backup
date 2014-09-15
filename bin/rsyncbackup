@@ -9,6 +9,25 @@ do
 	echo "Backup for $machine"
   source $backup_d$machine
 
+  if [ -n "$mysql_user" ]; then
+    echo "MySQL backup for $machine"
+    databases=`mysql --host=$mysql_host --user=$mysql_user --password=$mysql_pass -e 'SHOW DATABASES;' | grep -Ev '(Database|information_schema)'`
+    echo "Will backup batabases $databases."
+    for database in $databases
+    do
+      result=`mysqldump --user=$mysql_user --password=$mysql_pass --host=$mysql_host $database | gzip -9 > $destination_folder/$database.gz`
+
+      if [ -e "$destination_folder/$database-5.gz" ]; then rm $destination_folder/$database-5.gz ; fi
+      if [ -e "$destination_folder/$database-4.gz" ]; then mv $destination_folder/$database-4.gz $destination_folder/$database-5.gz ; fi
+      if [ -e "$destination_folder/$database-3.gz" ]; then mv $destination_folder/$database-3.gz $destination_folder/$database-4.gz ; fi
+      if [ -e "$destination_folder/$database-2.gz" ]; then mv $destination_folder/$database-2.gz $destination_folder/$database-3.gz ; fi
+      if [ -e "$destination_folder/$database-1.gz" ]; then mv $destination_folder/$database-1.gz $destination_folder/$database-2.gz ; fi
+      mv $destination_folder/$database.gz $destination_folder/$database-1.gz
+
+      echo "Database $database done."
+    done
+  fi
+
   if [ $destination_host != "local" ] ; then
     destination_folder="$destination_host:$destination_folder"
   else
@@ -35,25 +54,6 @@ do
     echo $run_cmd
     $run_cmd
   done
-
-  if [ -n "$mysql_user" ]; then
-    echo "MySQL backup for $machine"
-    databases=`mysql --host=$mysql_host --user=$mysql_user --password=$mysql_pass -e 'SHOW DATABASES;' | grep -Ev '(Database|information_schema)'`
-    echo "Will backup batabases $databases."
-    for database in $databases
-    do
-      result=`mysqldump --user=$mysql_user --password=$mysql_pass --host=$mysql_host $database | gzip -9 > $destination_folder/$database.gz`
-
-      if [ -e "$destination_folder/$database-5.gz" ]; then rm $destination_folder/$database-5.gz ; fi
-      if [ -e "$destination_folder/$database-4.gz" ]; then mv $destination_folder/$database-4.gz $destination_folder/$database-5.gz ; fi
-      if [ -e "$destination_folder/$database-3.gz" ]; then mv $destination_folder/$database-3.gz $destination_folder/$database-4.gz ; fi
-      if [ -e "$destination_folder/$database-2.gz" ]; then mv $destination_folder/$database-2.gz $destination_folder/$database-3.gz ; fi
-      if [ -e "$destination_folder/$database-1.gz" ]; then mv $destination_folder/$database-1.gz $destination_folder/$database-2.gz ; fi
-      mv $destination_folder/$database.gz $destination_folder/$database-1.gz
-
-      echo "Database $database done."
-    done
-  fi
 
 done
 echo "Done"
