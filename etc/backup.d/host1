@@ -1,10 +1,29 @@
+# MySQL Settings
+# Destination folder
 mysql_backup_to=/tmp/mysql_backup_to
-mysql_exclude_databases=""
-mysql_host=
-mysql_user=
+
+# Excluded databases. Internal excludes information_schema|mysql|performance_schema
+mysql_exclude_databases="database1|database2"
+
+# Host and login info
+mysql_host=localhost
+mysql_user=root
 mysql_pass=
+
+# Source host.
+# If set to local perform a local backup. Otherwise do a remote backup
 source_host="local"
-source_folders="/etc /usr/local /home/user1"
+
+# Source folders
+# $mysql_backup_to define the locatiom of MySQL dump folder. Do not remove it
+# you want to backyp databases.
+source_folders="/etc /usr/local /home/user1 $mysql_backup_to"
+
+# Excluded paths
 exclude_from="host1_exclude"
+
+# Destination folder on a local or remote host.
 destination_folder="/media/extra/local_backup/"
+
+# Destination host. If set to local store backup files on localhost.
 destination_host="local"
