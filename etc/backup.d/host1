@@ -1,9 +1,10 @@
+mysql_backup_to=/tmp/mysql_backup_to
+mysql_exclude_databases=""
+mysql_host=
+mysql_user=
+mysql_pass=
 source_host="local"
 source_folders="/etc /usr/local /home/user1"
 exclude_from="host1_exclude"
 destination_folder="/media/extra/local_backup/"
 destination_host="local"
-mysql_backup_to=/tmp/mysql_backup_to
-mysql_host=
-mysql_user=
-mysql_pass=
