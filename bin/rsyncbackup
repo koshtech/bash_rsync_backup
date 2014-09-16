@@ -15,27 +15,26 @@ do
   if [ -n "$mysql_user" ]; then
     echo "MySQL backup for $machine"
     databases=`mysql --host=$mysql_host --user=$mysql_user --password=$mysql_pass -e 'SHOW DATABASES;' | grep -Ev "(Database|information_schema|mysql|performance_schema$mysql_exclude_databases)"`
-    echo "Backup MySQL batabases: $databases"
+    echo "Backup MySQL batabases."
+    mkdir -p $mysql_backup_to
     for database in $databases
     do
       result=`mysqldump --user=$mysql_user --password=$mysql_pass --host=$mysql_host $database | gzip -9 > $mysql_backup_to/$database.gz`
-
       if [ -e "$mysql_backup_to/$database-5.gz" ]; then rm $mysql_backup_to/$database-5.gz ; fi
       if [ -e "$mysql_backup_to/$database-4.gz" ]; then mv $mysql_backup_to/$database-4.gz $mysql_backup_to/$database-5.gz ; fi
       if [ -e "$mysql_backup_to/$database-3.gz" ]; then mv $mysql_backup_to/$database-3.gz $mysql_backup_to/$database-4.gz ; fi
       if [ -e "$mysql_backup_to/$database-2.gz" ]; then mv $mysql_backup_to/$database-2.gz $mysql_backup_to/$database-3.gz ; fi
       if [ -e "$mysql_backup_to/$database-1.gz" ]; then mv $mysql_backup_to/$database-1.gz $mysql_backup_to/$database-2.gz ; fi
       mv $mysql_backup_to/$database.gz $mysql_backup_to/$database-1.gz
-
       echo "Database $database done."
     done
   fi
 
-
   if [ -n "$mongodb_user" ]; then
     echo "MongoDB backup for $machine"
     databases=`echo "show databases" | mongo -u $mongodb_user -p $mongodb_pass --host $mongodb_host:$mongodb_port --authenticationDatabase admin --quiet | cut -f 1 | grep -Ev "(Database|local|test$mongodb_exclude_databases)"`
-    echo "Backup MongoDB batabases:"
+    echo "Backup MongoDB batabases."
+    mkdir -p $mongodb_backup_to
     for database in $databases
     do
       mongodump -u $mongodb_user -p $mongodb_pass -h $mongodb_host --authenticationDatabase admin -d $database -o $mongodb_backup_to/
