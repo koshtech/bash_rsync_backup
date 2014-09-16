@@ -10,6 +10,19 @@ mysql_host=localhost
 mysql_user=root
 mysql_pass=
 
+# MongoDB Settings
+# Destination folder
+mongodb_backup_to=/tmp/mongodb_backup_to
+
+# Excluded databases. Internal excludes local|test
+mongodb_exclude_databases=""
+
+# Host and login info
+mongodb_host=localhost
+mongodb_port=27017
+mongodb_user=admin
+mongodb_pass=
+
 # Source host.
 # If set to local perform a local backup. Otherwise do a remote backup
 source_host="local"

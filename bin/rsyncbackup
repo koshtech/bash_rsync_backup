@@ -15,7 +15,7 @@ do
   if [ -n "$mysql_user" ]; then
     echo "MySQL backup for $machine"
     databases=`mysql --host=$mysql_host --user=$mysql_user --password=$mysql_pass -e 'SHOW DATABASES;' | grep -Ev "(Database|information_schema|mysql|performance_schema$mysql_exclude_databases)"`
-    echo "Will backup batabases $databases: $databases"
+    echo "Backup MySQL batabases: $databases"
     for database in $databases
     do
       result=`mysqldump --user=$mysql_user --password=$mysql_pass --host=$mysql_host $database | gzip -9 > $mysql_backup_to/$database.gz`
@@ -27,6 +27,27 @@ do
       if [ -e "$mysql_backup_to/$database-1.gz" ]; then mv $mysql_backup_to/$database-1.gz $mysql_backup_to/$database-2.gz ; fi
       mv $mysql_backup_to/$database.gz $mysql_backup_to/$database-1.gz
 
+      echo "Database $database done."
+    done
+  fi
+
+
+  if [ -n "$mongodb_user" ]; then
+    echo "MongoDB backup for $machine"
+    databases=`echo "show databases" | mongo -u $mongodb_user -p $mongodb_pass --host $mongodb_host:$mongodb_port --authenticationDatabase admin --quiet | cut -f 1 | grep -Ev "(Database|local|test$mongodb_exclude_databases)"`
+    echo "Backup MongoDB batabases:"
+    for database in $databases
+    do
+      mongodump -u $mongodb_user -p $mongodb_pass -h $mongodb_host --authenticationDatabase admin -d $database -o $mongodb_backup_to/
+      cd $mongodb_backup_to
+      tar -zcvf $database.tar.gz $database
+      rm -rf $database
+      if [ -e "$mongodb_backup_to/$database-5.tar.gz" ]; then rm $mongodb_backup_to/$database-5.tar.gz ; fi
+      if [ -e "$mongodb_backup_to/$database-4.tar.gz" ]; then mv $mongodb_backup_to/$database-4.tar.gz $mongodb_backup_to/$database-5.tar.gz ; fi
+      if [ -e "$mongodb_backup_to/$database-3.tar.gz" ]; then mv $mongodb_backup_to/$database-3.tar.gz $mongodb_backup_to/$database-4.tar.gz ; fi
+      if [ -e "$mongodb_backup_to/$database-2.tar.gz" ]; then mv $mongodb_backup_to/$database-2.tar.gz $mongodb_backup_to/$database-3.tar.gz ; fi
+      if [ -e "$mongodb_backup_to/$database-1.tar.gz" ]; then mv $mongodb_backup_to/$database-1.tar.gz $mongodb_backup_to/$database-2.tar.gz ; fi
+      mv $mongodb_backup_to/$database.tar.gz $mongodb_backup_to/$database-1.tar.gz
       echo "Database $database done."
     done
   fi
