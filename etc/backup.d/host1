@@ -9,6 +9,7 @@ mysql_exclude_databases="|database1|database2"
 mysql_host=localhost
 mysql_user=root
 mysql_pass=
+mysql_options="--sock=/var/run/mysqld/mysqld2.sock"
 
 # MongoDB Settings
 # Destination folder
@@ -30,7 +31,7 @@ source_host="local"
 # Source folders
 # $mysql_backup_to define the locatiom of MySQL dump folder. Do not remove it
 # you want to backyp databases.
-source_folders="/etc /usr/local /home/user1 $mysql_backup_to"
+source_folders="/etc /usr/local /home/user1 $mysql_backup_to $mongodb_backup_to"
 
 # Excluded paths
 exclude_from="host1_exclude"
